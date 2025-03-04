@@ -1,0 +1,183 @@
+/* 모달 오버레이 스타일 */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+    display: none;
+}
+
+.modal-overlay.show {
+    opacity: 1;
+}
+
+/* Dialog 스타일 */
+.dialog_wrap {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: #fff;
+    z-index: 1001;
+    display: none;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    width: 1100px;
+    max-width: 80vw;
+    max-height: 90vh;
+    overflow-y: auto;
+}
+
+.dialog_wrap.show {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+}
+
+.dialog_title {
+    font-size: 1.5em;
+    font-weight: bold;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #eee;
+}
+
+.dialog_cont {
+    line-height: 1.6;
+}
+
+.btn_close {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    cursor: pointer;
+    font-size: 1.2em;
+    color: #666;
+    transition: color 0.3s ease;
+}
+
+.btn_close:hover {
+    color: #333;
+}
+
+/* 반응형 스타일 */
+@media (max-width: 768px) {
+    .dialog_wrap {
+        width: 90%;
+        max-height: 90vh;
+    }
+
+    .dialog_title {
+        font-size: 1.2em;
+    }
+}
+
+/* Video Modal Specific Styles */
+.video-dialog {
+    width: 80vw;
+    max-width: 1200px;
+    background: #000;
+    padding: 0;
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.video-dialog .dialog_title {
+    color: #fff;
+    padding: 20px;
+    margin: 0;
+    background: rgba(0, 0, 0, 0.8);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.video-dialog .btn_close {
+    color: #fff;
+    top: 15px;
+    right: 20px;
+    font-size: 1.5em;
+    z-index: 1002;
+    transition: all 0.3s ease;
+}
+
+.video-dialog .btn_close:hover {
+    color: #fff;
+    transform: scale(1.1);
+}
+
+.video-container {
+    position: relative;
+    width: 100%;
+    height: auto;
+}
+
+.video-container video {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+/* 모달 애니메이션 */
+.video-dialog {
+    transform: translate(-50%, -50%) scale(0.9);
+    opacity: 0;
+    transition: all 0.3s ease;
+}
+
+.video-dialog.show {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 1;
+}
+
+/* 반응형 스타일 */
+@media (max-width: 768px) {
+    .video-dialog {
+        width: 95vw;
+    }
+    
+    .video-dialog .dialog_title {
+        padding: 15px;
+        font-size: 1.1em;
+    }
+}
+
+/* PiP 모드 스타일 */
+.video-dialog.hide {
+    display: none !important;
+}
+
+/* 공통 모달 스타일 */
+.fa-xmark {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    cursor: pointer;
+    font-size: 1.2em;
+    transition: all 0.3s ease;
+}
+
+.fa-xmark:hover {
+    transform: scale(1.1);
+    opacity: 0.8;
+}
+
+/* 각 모달별 닫기 버튼 스타일 */
+#closeVideoModal {
+    color: #fff;
+}
+
+#closeQuestionModal {
+    color: #333;
+}
+
+#closeHelpModal {
+    color: #333;
+}
+
+/* 접근성 포커스 표시 */
+.dialog_wrap:focus, .popup_wrap:focus {
+    outline: 2px solid #007bff;
+    outline-offset: 2px;
+}

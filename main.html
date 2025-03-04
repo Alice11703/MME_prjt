@@ -1,0 +1,490 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MME</title>
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet" type='text/css'>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="assets/css/modal.css">
+    <link rel="stylesheet" href="assets/css/help.css">
+    <script src="https://kit.fontawesome.com/8e13ff4a1b.js" crossorigin="anonymous"></script>
+    <script type="text/javascript" src="assets/scripts/jquery-3.5.1.min.txt"></script>
+    <script type="text/javascript" src="assets/scripts/jquery-ui-1.13.2.min.txt"></script>
+</head>
+<body>
+    <div class="container">
+        <div class="header main-header">
+            <dl>
+                <dd>
+                    <!-- web -->
+                    <img alt="MME" src="assets/images/MME_Horizontal_tag.png" class="img_logo__web" />
+
+                    <!-- mobile -->
+                    <img alt="MME" src="assets/images/MME_Horizontal__w.png" class="img_logo__mobile" />
+                </dd>
+                <dd>
+                    <div class="search-box">
+                        <i class="fa-duotone fa-magnifying-glass"></i>
+                        <input type="text" id="searchInput" class="" placeholder="Search Lenders" />
+                    </div>
+                </dd>
+                <dd class="header-actions">
+                    <!-- Help button -->
+                    <div class="action-item help">
+                        <i class="fa-light fa-circle-question"></i>
+                        <span class="desktop-only" id="helpButton">Help?</span>
+                    </div>
+                    <!-- Logout button -->
+                    <div class="action-item logout">
+                        <i class="fa-solid fa-right-from-bracket"></i>
+                        <span class="desktop-only" onclick="location.href='login.html'">Logout</span>
+                    </div>
+                </dd>
+            </dl>
+        </div>
+        <div class="content">
+            <div class="left-menu">
+                <div id="listContainerFav" class="fav-container">
+                    <div class="title">Favorite Lenders</div>
+                    <div class="item">
+                        <dl>
+                            <dt><i class="fa-regular fa-star fa-solid ico-fav__on" title="Remove from Favorite Lenders"></i></dt>
+                            <dd class="lender-name">Bank of America</dd>
+                        </dl>
+                    </div>
+                    <div class="item">
+                        <dl>
+                            <dt><i class="fa-regular fa-star fa-solid ico-fav__on" title="Remove from Favorite Lenders"></i></dt>
+                            <dd class="lender-name">Calyx Mortgage</dd>
+                        </dl>
+                    </div>
+                    <div class="item">
+                        <dl>
+                            <dt><i class="fa-regular fa-star fa-solid ico-fav__on" title="Remove from Favorite Lenders"></i></dt>
+                            <dd class="lender-name">Rocket Pro TPO</dd>
+                        </dl>
+                    </div>
+                    <div class="item">
+                        <dl>
+                            <dt><i class="fa-regular fa-star fa-solid ico-fav__on" title="Remove from Favorite Lenders"></i></dt>
+                            <dd class="lender-name">United Wholesale Mortgage</dd>
+                        </dl>
+                    </div>
+                </div>
+            </div>
+            <div class="main-contents">
+                <div class="list-wrap">
+                    <div id="favoritesPopup" class="popup_wrap" style="display:none;">
+                        <div class="popup_title"></div>
+                        <i class="fa-solid fa-xmark btn_close"></i>
+                        <div class="popup_cont">
+                            You can add up to 4 Favorite Lenders.<br />
+                            To add this lenderremove another lender from Favorite Lenders.
+                        </div>
+                        <div class="btn-group">
+                            <dl>
+                                <dd><button id="btnOkay" type="button" class="btn_comm" value="OK">OK</button></dd>
+                            </dl>
+                        </div>
+                    </div>
+                    <div class="lender-container__grid">
+                        <div class="title">Available Lenders</div>
+                        <div id="sortByAtoZ" class="sort-container">
+                            <span>Sort by Lender Name</span>
+                            <i class="fa-regular fa-arrow-up-a-z"></i>
+                            <!--<i class="fa-regular fa-arrow-up-z-a"></i>-->
+                        </div>
+                        <div id="listContainer" class="lender-container">
+                            <!-- search result here -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <footer class="footer">
+                ©Calyx Technology, Inc. All rights reserved.
+            </footer>
+        </div>
+    </div>
+
+    <!-- Help Dialog -->
+    <div class="modal-overlay" style="display:none;"></div>
+    <div id="helpDialog" class="dialog_wrap" style="display:none;">
+        <div class="dialog_title">Help</div>
+        <i class="fa-solid fa-xmark btn_close"></i>
+        <div class="dialog_cont">
+            <!-- help content will be loaded here -->
+        </div>
+    </div>
+    
+    <!-- Video Modal -->
+    <div class="modal-overlay" style="display:none;"></div>
+    <div id="videoDialog" class="dialog_wrap video-dialog" style="display:none;">
+        <div class="dialog_title">MME Introduction Video</div>
+        <i class="fa-solid fa-xmark btn_close"></i>
+        <div class="dialog_cont video-container">
+            <iframe 
+                width="100%" 
+                height="100%" 
+                src="https://www.youtube.com/embed/your-video-id" 
+                frameborder="0" 
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                allowfullscreen>
+            </iframe>
+        </div>
+    </div>
+    
+    <script type="text/javascript">
+    $(document).ready(function() {
+        // Help 버튼 클릭 이벤트
+        $("#helpButton, .help i").click(async function() {
+            $(".modal-overlay").fadeIn(300);
+            try {
+                const response = await fetch('help.html', {
+                    cache: 'no-store',
+                    credentials: 'same-origin',
+                    headers: {
+                        'Cache-Control': 'no-cache',
+                        'Pragma': 'no-cache'
+                    }
+                });
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                const content = await response.text();
+                $(".dialog_cont").html(content);
+            } catch (error) {
+                console.error('Error loading help content:', error);
+                $(".dialog_cont").html(`
+                    <div class="error-message">
+                        <p>Sorry, help content could not be loaded.</p>
+                        <p>Please try again later.</p>
+                    </div>
+                `);
+            }
+            $("#helpDialog").fadeIn(300);
+        });
+
+        // // Dialog 닫기 버튼 이벤트
+        // $("#closeHelpModal").click(function() {
+        //     $(".modal-overlay").fadeOut(300);
+        //     $("#helpDialog").fadeOut(300);
+            
+        //     // help 상태 초기화 추가
+        //     if (MMEHelp && typeof MMEHelp.setInitialState === 'function') {
+        //         MMEHelp.setInitialState();
+        //     }
+        // });
+
+        // Dialog 외부 클릭시 닫기
+        $(document).on('click', '.modal-overlay', function() {
+            $(".modal-overlay").fadeOut(300);
+            $("#helpDialog").fadeOut(300);
+        });
+
+        // Video Modal 관련 JavaScript
+        $("#btnPlayPoint").click(function() {
+            $(".modal-overlay").fadeIn(300);
+            $("#videoDialog")
+                .addClass('show')
+                .fadeIn(300);
+        });
+
+        $("#videoDialog .btn_close, .modal-overlay").click(function() {
+            $("#videoDialog")
+                .removeClass('show')
+                .fadeOut(300);
+            $(".modal-overlay").fadeOut(300);
+            
+            // 비디오 정지 (iframe src 재설정)
+            const videoFrame = $("#videoDialog iframe");
+            const videoSrc = videoFrame.attr('src');
+            videoFrame.attr('src', '');
+            videoFrame.attr('src', videoSrc);
+        });
+    });
+    </script>
+</body>
+</html>
+
+
+<script type="text/javascript">
+    // lendersList를 먼저 선언
+    const lendersList = [
+        { id: 'lender01', name: 'Bank of America', image: '01', fav: 'ico-fav__on fa-solid' },
+        { id: 'lender02', name: 'Caliber Home Loans', image: '02', fav: 'ico-fav__off disabled' },
+        { id: 'lender03', name: 'Calyx Mortgage', image: '03', fav: 'ico-fav__on fa-solid' },
+        { id: 'lender04', name: 'Check Lender Products', image: '04', fav: 'ico-fav__off disabled' },
+        { id: 'lender05', name: 'Flagstar Bank', image: '05', fav: 'ico-fav__off disabled' },
+        { id: 'lender06', name: 'Freedom LongLongLongLong Name Mortgage', image: '06', fav: 'ico-fav__off disabled' },
+        { id: 'lender07', name: 'Plaza Home Mortgage', image: '07', fav: 'ico-fav__off disabled' },
+        { id: 'lender08', name: 'Rocket Pro TPO', image: '08', fav: 'ico-fav__on fa-solid' },
+        { id: 'lender09', name: 'Santander Bank', image: '09', fav: 'ico-fav__off disabled' },
+        { id: 'lender10', name: 'Sierra Pacific', image: '10', fav: 'ico-fav__off disabled' },
+        { id: 'lender11', name: 'United Wholesale Mortgage', image: '11', fav: 'ico-fav__on fa-solid' },
+        { id: 'lender12', name: 'Wells Fargo', image: '12', fav: 'ico-fav__off disabled' }
+    ];
+
+    let isAscending = true; // 정렬 상태를 추적하는 변수
+
+    $(document).ready(function () {
+        console.log('DOM ready');
+        console.log('container element:', document.querySelector('#listContainer'));
+        console.log('lendersList:', lendersList);
+
+        $("#sortByAtoZ").unbind("click").bind("click", function () {
+            isAscending = !isAscending; // 정렬 방향 토글
+            $(".sort-container i").toggleClass('fa-arrow-up-z-a');
+            
+            // lendersList 정렬
+            lendersList.sort((a, b) => {
+                const comparison = a.name.localeCompare(b.name);
+                return isAscending ? comparison : -comparison;
+            });
+
+            // 컨테이너 비우기
+            const container = document.querySelector('#listContainer');
+            container.innerHTML = '';
+
+            // 재렌더링
+            const fragment = document.createDocumentFragment();
+            lendersList.forEach((lenderData) => {
+                const div = document.createElement('div');
+                div.id = lenderData.id;
+                div.className = 'item';
+                div.innerHTML = `
+                    <dl>
+                        <dd>
+                            <i class="fa-regular fa-star ${lenderData.fav}" title="Add to Favorite Lenders"></i>
+                            <img alt="MME" src="assets/images/img${lenderData.image}.png" />
+                        </dd>
+                        <dt>${lenderData.name}</dt>
+                    </dl>
+                `;
+                fragment.appendChild(div);
+            });
+            
+            container.appendChild(fragment);
+        });
+
+        //popups
+        $(".btn_close").unbind("click").bind("click", function () {
+            $("#favoritesPopup").hide();
+        });
+        $("#btnOkay").unbind("click").bind("click", function () {
+            $("#favoritesPopup").hide();
+        });
+
+        //favorites
+        $(".fa-star").unbind("click").bind("click", function () {
+            $(this).toggleClass('fa-solid');
+        });
+        $("i.disabled").unbind("click").bind("click", function () {
+            $("#favoritesPopup").show();
+        });
+        $(".fa-solid.ico-fav__on").unbind("click").bind("click", function () {
+            $(this).toggleClass('ico-fav__on fa-solid');
+            //$(".ico-fav__off").toggleClass('disabled');
+
+            $(this).parent().parent().parent().hide();
+            $(".ico-fav__off").removeClass('disabled');
+        });
+        $(".ico-fav__off").unbind("click").bind("click", function () {
+            $(this).toggleClass('ico-fav__on fa-solid');
+        });
+
+        // 검색 기능 구현
+        $("#searchInput").on("input", function() {
+            const searchTerm = $(this).val().toLowerCase();
+            
+            // 검색어에 맞는 lenders 필터링
+            const filteredLenders = lendersList.filter(lender => 
+                lender.name.toLowerCase().includes(searchTerm)
+            );
+
+            // 컨테이너 비우기
+            const container = document.querySelector('#listContainer');
+            container.innerHTML = '';
+
+            // 검색 결과가 없는 경우 메시지 표시
+            if (filteredLenders.length === 0 && searchTerm !== '') {
+                const noResultsDiv = document.createElement('div');
+                noResultsDiv.className = 'no-results';
+                noResultsDiv.innerHTML = `
+                    <div style="text-align: center; padding: 20px; color: #666;">
+                        <p>No matching lenders found.</p>
+                        <p>Please try a different search term.</p>
+                    </div>
+                `;
+                container.appendChild(noResultsDiv);
+                return;
+            }
+
+            // 필터링된 결과 렌더링
+            const fragment = document.createDocumentFragment();
+            filteredLenders.forEach((lenderData) => {
+                const div = document.createElement('div');
+                div.id = lenderData.id;
+                div.className = 'item';
+                div.innerHTML = `
+                    <dl>
+                        <dd>
+                            <i class="fa-regular fa-star ${lenderData.fav}" title="Add to Favorite Lenders"></i>
+                            <img alt="MME" src="assets/images/img${lenderData.image}.png" />
+                        </dd>
+                        <dt>${lenderData.name}</dt>
+                    </dl>
+                `;
+                fragment.appendChild(div);
+            });
+            
+            container.appendChild(fragment);
+        });
+
+        // 초기 렌더링 함수 (기존 코드와 중복을 피하기 위해 함수로 분리)
+        const renderLendersList = (lenders = lendersList) => {
+            const container = document.querySelector('#listContainer');
+            if (!container) {
+                console.error('#listContainer를 찾을 수 없습니다');
+                return;
+            }
+
+            container.innerHTML = '';
+            const fragment = document.createDocumentFragment();
+            
+            lenders.forEach((lenderData) => {
+                const div = document.createElement('div');
+                div.id = lenderData.id;
+                div.className = 'item';
+                div.innerHTML = `
+                    <dl>
+                        <dd>
+                            <i class="fa-regular fa-star ${lenderData.fav}" title="Add to Favorite Lenders"></i>
+                            <img alt="MME" src="assets/images/img${lenderData.image}.png" />
+                        </dd>
+                        <dt>${lenderData.name}</dt>
+                    </dl>
+                `;
+                fragment.appendChild(div);
+            });
+            
+            container.appendChild(fragment);
+        };
+
+        // 초기 렌더링
+        renderLendersList();
+    });
+</script>
+
+<script type="text/javascript">
+const MMEMain = {
+    init() {
+        this.modalManager.init();
+        this.bindEvents();
+    },
+
+    modalManager: {
+        init() {
+            this.bindHelpButtonEvent();
+            this.bindModalCloseEvents();
+        },
+
+        bindHelpButtonEvent() {
+            $("#helpButton, .help i").on('click', async function(e) {
+                e.preventDefault();
+                
+                // 모달 및 오버레이 표시
+                $(".modal-overlay").fadeIn(300);
+                $("#helpDialog").fadeIn(300);
+
+                try {
+                    const response = await fetch('help.html', {
+                        cache: 'no-store',
+                        credentials: 'same-origin',
+                        headers: {
+                            'Cache-Control': 'no-cache',
+                            'Pragma': 'no-cache'
+                        }
+                    });
+
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+
+                    const htmlText = await response.text();
+                    
+                    // help.html에서 필요한 컨텐츠만 추출
+                    const parser = new DOMParser();
+                    const doc = parser.parseFromString(htmlText, 'text/html');
+                    
+                    // help.html의 실제 컨텐츠 부분만 선택
+                    const helpContent = doc.querySelector('.content-help');
+                    
+                    if (helpContent) {
+                        // 컨텐츠 삽입
+                        $("#helpDialog .dialog_cont").empty().append(helpContent);
+                        
+                        // help.html의 스크립트 재실행
+                        const scripts = doc.querySelectorAll('script');
+                        scripts.forEach(script => {
+                            const newScript = document.createElement('script');
+                            Array.from(script.attributes).forEach(attr => {
+                                newScript.setAttribute(attr.name, attr.value);
+                            });
+                            newScript.textContent = script.textContent;
+                            $("#helpDialog .dialog_cont").append(newScript);
+                        });
+
+                        // 디버깅용 로그
+                        console.log('Help content loaded successfully');
+                        console.log('Content structure:', helpContent);
+                    } else {
+                        throw new Error('Help content not found in response');
+                    }
+
+                } catch (error) {
+                    console.error('Error loading help content:', error);
+                    $("#helpDialog .dialog_cont").html(`
+                        <div class="error-message">
+                            <p>Sorry, help content could not be loaded.</p>
+                            <p>Please try again later.</p>
+                            <p>Error: ${error.message}</p>
+                        </div>
+                    `);
+                }
+            });
+        },
+
+        bindModalCloseEvents() {
+            // 모달 닫기 이벤트
+            $("#helpDialog .btn_close, .modal-overlay").on('click', function() {
+                $("#helpDialog").fadeOut(300);
+                $(".modal-overlay").fadeOut(300);
+            });
+
+            // ESC 키 이벤트
+            $(document).on('keydown', function(e) {
+                if (e.key === 'Escape') {
+                    $("#helpDialog").fadeOut(300);
+                    $(".modal-overlay").fadeOut(300);
+                }
+            });
+        }
+    },
+
+    bindEvents() {
+        // main.html 특정 이벤트들 (검색, 정렬 등)
+        // ... existing main.html events ...
+    }
+};
+
+// 문서 로드 시 초기화
+$(document).ready(() => {
+    console.log('Initializing MMEMain...');
+    MMEMain.init();
+});
+</script>

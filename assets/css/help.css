@@ -1,0 +1,90 @@
+/* 모던한 Q&A 스타일링 */
+.qa-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.qa-search {
+    position: relative;
+    margin-bottom: 20px;
+}
+
+.qa-list {
+    max-height: 600px;
+    overflow-y: auto;
+}
+
+.qa-item {
+    border-bottom: 1px solid #eee;
+}
+
+.qa-item dt {
+    position: relative;
+    padding: 15px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    color: inherit;
+    transition: color 0.3s ease;
+}
+
+.qa-item.active dt,
+.qa-item.active dd {
+    color: var(--defaultSub2);
+}
+
+.qa-item dt i {
+    margin-right: 10px;
+    transition: transform 0.3s ease;
+}
+
+.qa-item.active dt i {
+    transform: rotate(90deg);
+}
+
+.qa-item dd {
+    padding: 0 15px 15px 40px;
+    display: none;
+}
+
+.qa-item.on dd {
+    display: block;
+}
+
+.qa-search input {
+    width: 100%;
+    padding: 10px 40px 10px 15px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 14px;
+}
+
+.qa-search i {
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    color: #666;
+}
+
+/* 메뉴 스타일 */
+.menu-list {
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.menu-list.on {
+    background-color: var(--activeBlue);
+    color: white;
+}
+
+/* 컨텐츠 영역 스타일 */
+.help-list {
+    display: none;
+}
+
+.help-list.show {
+    display: block;
+} 

@@ -1,0 +1,622 @@
+﻿<style>
+  body {
+    background: var(--defaultGreen);
+  }
+</style>
+
+<!-- Help 모달 -->
+<div
+  id="helpDialog"
+  class="dialog_wrap"
+  style="display: none"
+  role="dialog"
+  aria-modal="true"
+>
+  <div class="dialog_title" id="helpDialogTitle">Help</div>
+  <i class="fa-solid fa-xmark" id="closeHelpModal"></i>
+  <div class="dialog_cont">
+    <!-- help content -->
+    <div class="support-grid">
+      <div class="content-area">
+        <div class="content-help">
+          <!-- menu -->
+          <div class="menu-list menu-1">
+            <img
+              alt="MME Logo"
+              src="assets/images/MME_logo_50x50.png"
+              class="img_logo"
+              title="What is MME?"
+            />
+            <div>What is MME?</div>
+          </div>
+          <div class="menu-list menu-2">
+            <i class="fa-sharp fa-regular fa-video"></i>
+            <div>Play Instructions</div>
+          </div>
+          <div class="menu-list menu-3">
+            <i class="fa-sharp fa-regular fa-square-question"></i>
+            <div>Q&#38;A</div>
+          </div>
+          <!-- main contents -->
+          <div class="main-contents">
+            <!-- What is MME -->
+            <div class="help-list help-1">
+              <img
+                alt="MME Logo"
+                src="assets/images/MME_Horizontal_tag_350.png"
+                title="MME Logo"
+              />
+
+              <div class="help-1-cont">
+                Mortgage Market Exchange (MME) enables users to directly and
+                securely send important loan data to a lender's portal.
+                <br /><br /><br />
+                Through MME, users can send loan applications and closing costs
+                (fees) all at once, providing timely submissions and quicker
+                closings for loan officers and lenders.
+                <br /><br /><br />
+                With MME's next-level efficiency, you can experience the future
+                now!
+              </div>
+            </div>
+
+            <!-- Play Instruction(s) -->
+            <div class="help-list help-2" style="display: none">
+              <div class="help-2__web">
+                <div class="help-2-cont">
+                  <div class="item-1">
+                    <dl>
+                      <dt>
+                        <span>For the Point Users</span>
+                        <span id="btnPlayPoint"
+                          ><i class="fa-solid fa-circle-play"></i> Play!</span
+                        >
+                      </dt>
+                      <dd>
+                        1. A user will either create or upload their application
+                        to their LOS
+                      </dd>
+                      <dd>
+                        2. Once all information has been entered and added to
+                        the file, the user will navigate to the Lenders tab and
+                        select MME Loan Submit.
+                      </dd>
+                      <dd>3. Then the MME is opened on the new window.</dd>
+                    </dl>
+                  </div>
+                  <div class="item-2">
+                    <dl>
+                      <dt>
+                        <span>For the Zenly Users</span>
+                        <!-- <span><i class="fa-solid fa-circle-play"></i> Play!</span> -->
+                      </dt>
+                      <dd>
+                        1. A user will either create or upload their application
+                        to their LOS
+                      </dd>
+                      <dd>
+                        2. Once all information has been entered and added to
+                        the file, the user will navigate to the Services tab and
+                        select Mortgage Market Exchange.
+                      </dd>
+                      <dd>
+                        3. On this page a user will select New Request (if not
+                        already there), and then select the Mortgage Market
+                        Exchange button.
+                      </dd>
+                      <dd>4. Then the MME is opened on the new window.</dd>
+                    </dl>
+                  </div>
+                  <div class="item-3">
+                    <dl>
+                      <dt>
+                        <span>For the Path Users</span>
+                        <!-- <span><i class="fa-solid fa-circle-play"></i> Play!</span> -->
+                      </dt>
+                      <dd>
+                        1. A user will either create or upload their application
+                        to their LOS
+                      </dd>
+                      <dd>
+                        2. Once all information has been entered and added to
+                        the file, the user will navigate to the Production tab
+                        and select the Send/Status screen. MME Loan Submission
+                        button will appear on the bottom of the screen.
+                      </dd>
+                      <dd>
+                        3. Once MME Loan Submission is selected, the MME
+                        homepage will launch in a new window.
+                      </dd>
+                    </dl>
+                  </div>
+                  <div class="item-4">
+                    <div class="icon-container">
+                      <i class="fa-regular fa-circle-right"></i>
+                    </div>
+                    <dl>
+                      <dt>In MME</dt>
+                      <dd>
+                        1. Select the MME Lender you want to submit your loan
+                        to, and enter your Login credentials.
+                      </dd>
+                      <dd>
+                        2. Next review your Loan Information and select Submit
+                        or Cancel. Once the loan is Submitted, the Lender will
+                        receive the submission, register the loan, and begin to
+                        process the mortgage application.
+                      </dd>
+                    </dl>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Q&A -->
+            <div class="help-list help-3" style="display: none">
+              <div class="qa-container">
+                <!-- 검색 기능 -->
+                <div class="qa-search">
+                  <input type="text" placeholder="질문 검색하기..." />
+                  <i class="fa-solid fa-magnifying-glass"></i>
+                </div>
+
+                <!-- Q&A 리스트 컨테이너 -->
+                <div id="helpListContainer" class="qa-list">
+                  <!-- Q&A 아이템들이 여기에 동적으로 추가됨 -->
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Video Modal -->
+      <div id="popPlayer" class="dialog_wrap video-dialog">
+        <div class="dialog_title">MME Introduction Video</div>
+        <i class="fa-solid fa-xmark" id="closeVideoModal"></i>
+        <div class="dialog_cont video-container">
+          <video
+            id="MMEVideo"
+            controls
+            muted
+            class="video-js vjs-fluid"
+            data-setup='{ "playbackRates": [1, 1.5, 2] }'
+            allowfullscreen
+          >
+            <source
+              type="video/mp4"
+              src="https://calyxwmstorageqa.blob.core.windows.net/common/MME/Mortgage%20Market%20Exchange-Zenly.mp4"
+            />
+          </video>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script type="text/javascript">
+  // 모듈화된 구조
+  const MMEHelp = {
+    // 상수 정의
+    constants: {
+      selectors: {
+        videoPlayer: "#MMEVideo",
+        videoModal: "#popPlayer",
+        menuItems: ".menu-list",
+        helpSections: ".help-list",
+        qaContainer: "#helpListContainer",
+      },
+      classes: {
+        active: "on",
+        show: "show",
+        hide: "hide",
+      },
+    },
+
+    // 모달 상태 관리
+    modalState: {
+      stack: [],
+      activeModal: null,
+
+      push(modalId) {
+        this.stack.push(modalId);
+        this.activeModal = modalId;
+      },
+
+      pop() {
+        this.stack.pop();
+        this.activeModal = this.stack[this.stack.length - 1] || null;
+      },
+
+      isActive(modalId) {
+        return this.activeModal === modalId;
+      },
+    },
+
+    // 모달 관리자 개선
+    modalManager: {
+      init() {
+        this.bindModalEvents();
+        this.setupKeyboardEvents();
+        this.setupFocusTrap();
+      },
+
+      bindModalEvents() {
+        // 비디오 모달
+        this.setupModal("popPlayer", "closeVideoModal", () => {
+          const video = document.getElementById("MMEVideo");
+          if (video) video.pause();
+        });
+
+        // 질문 모달
+        this.setupModal("popSubmitQuestion", "closeQuestionModal");
+
+        // 헬프 모달
+        this.setupModal("helpDialog", "closeHelpModal");
+
+        // 오버레이 클릭
+        $(".modal-overlay").on("click", this.closeAllModals.bind(this));
+      },
+
+      setupModal(modalId, closeButtonId, onClose) {
+        const $modal = $(`#${modalId}`);
+        const $closeBtn = $(`#${closeButtonId}`);
+
+        // ARIA 속성 추가
+        $modal.attr({
+          role: "dialog",
+          "aria-modal": "true",
+          "aria-labelledby": `${modalId}Title`,
+          "aria-hidden": "true",
+        });
+
+        // 닫기 버튼 접근성
+        $closeBtn.attr({
+          "aria-label": "닫기",
+          role: "button",
+          tabindex: "0",
+        });
+
+        // 열기 이벤트
+        $modal.on("show.modal", () => {
+          MMEHelp.modalState.push(modalId);
+          $modal.attr("aria-hidden", "false").addClass("show").css({
+            display: "block",
+            opacity: "1",
+          });
+          this.trapFocus($modal);
+        });
+
+        // 닫기 이벤트
+        $closeBtn.on("click keypress", (e) => {
+          if (e.type === "keypress" && e.key !== "Enter") return;
+          this.closeModal(modalId, onClose);
+        });
+      },
+
+      closeModal(modalId, onClose) {
+        const $modal = $(`#${modalId}`);
+
+        MMEHelp.modalState.pop();
+        $modal
+          .attr("aria-hidden", "true")
+          .removeClass("show")
+          .css("opacity", "0")
+          .fadeOut(300);
+
+        if (onClose) onClose();
+
+        if (MMEHelp.modalState.stack.length === 0) {
+          $(".modal-overlay").removeClass("show").fadeOut(300);
+        }
+      },
+
+      closeAllModals() {
+        $(".dialog_wrap, .popup_wrap").each((_, modal) => {
+          this.closeModal(modal.id);
+        });
+      },
+
+      setupKeyboardEvents() {
+        $(document).on("keydown", (e) => {
+          if (e.key === "Escape" && MMEHelp.modalState.activeModal) {
+            this.closeModal(MMEHelp.modalState.activeModal);
+          }
+        });
+      },
+
+      setupFocusTrap() {
+        const FOCUSABLE_ELEMENTS =
+          'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])';
+
+        $(document).on("keydown", (e) => {
+          if (!MMEHelp.modalState.activeModal) return;
+
+          const $modal = $(`#${MMEHelp.modalState.activeModal}`);
+          const $focusableElements = $modal.find(FOCUSABLE_ELEMENTS);
+          const $firstFocusable = $focusableElements.first();
+          const $lastFocusable = $focusableElements.last();
+
+          if (e.key === "Tab") {
+            if (e.shiftKey) {
+              if (document.activeElement === $firstFocusable[0]) {
+                e.preventDefault();
+                $lastFocusable.focus();
+              }
+            } else {
+              if (document.activeElement === $lastFocusable[0]) {
+                e.preventDefault();
+                $firstFocusable.focus();
+              }
+            }
+          }
+        });
+      },
+    },
+
+    // 비디오 플레이어 관리
+    videoPlayer: {
+      init() {
+        this.video = document.getElementById("MMEVideo");
+        this.modal = document.querySelector("#popPlayer");
+        this.setupVideoSource();
+        this.bindVideoEvents();
+      },
+
+      setupVideoSource() {
+        const videoSource =
+          "https://calyxwmstorageqa.blob.core.windows.net/common/MME/Mortgage%20Market%20Exchange-Zenly.mp4";
+        $(this.video).find("source").attr("src", videoSource);
+        this.video.load();
+      },
+
+      bindVideoEvents() {
+        // Point 비디오 재생 버튼 클릭 이벤트
+        $("#btnPlayPoint").on("click", () => {
+          // 모달 표시 설정
+          $("#popPlayer")
+            .css({
+              display: "block",
+              opacity: "1",
+            })
+            .addClass("show");
+
+          // 배경 오버레이 표시
+          $(".popup-bg").css("display", "block").fadeIn(300);
+
+          // 비디오 로드
+          if (this.video) {
+            this.video.load();
+          }
+        });
+
+        // 비디오 모달 닫기 버튼 이벤트
+        $("#closeVideoModal").on("click", () => {
+          // 모달 숨기기
+          $("#popPlayer").removeClass("show").css({
+            opacity: "0",
+            display: "none",
+          });
+
+          // 배경 오버레이 숨기기
+          $(".popup-bg").fadeOut(300);
+
+          // 비디오 정지
+          if (this.video) {
+            this.video.pause();
+          }
+        });
+      },
+    },
+
+    // 메뉴 관리자 수정
+    menuManager: {
+      init() {
+        this.bindMenuEvents();
+        // 초기 상태 설정
+        $('.menu-1').addClass('on');
+        $('.help-1').addClass('show').show();
+      },
+
+      bindMenuEvents() {
+        $('.menu-list').on('click', function(e) {
+          e.preventDefault();
+          
+          const menuIndex = $(this).attr('class').match(/menu-(\d+)/)[1];
+          
+          // 메뉴 활성화 상태 변경
+          $('.menu-list').removeClass('on');
+          $(this).addClass('on');
+          
+          // 컨텐츠 변경
+          $('.help-list').removeClass('show').hide();
+          $(`.help-${menuIndex}`).addClass('show').fadeIn(300);
+
+          // Q&A 탭 클릭 시 리스트 렌더링
+          if (menuIndex === '3' && MMEHelp.qaManager) {
+            MMEHelp.qaManager.renderQAList();
+          }
+        });
+      },
+    },
+
+    // Q&A 관리
+    qaManager: {
+      // Q&A 데이터
+      qaData: [
+        {
+          question: 'Q1. What if it is not a "new request" but a resubmission?',
+          answer: "[Point]Please contact us; calyxinterfacesupport@calyxsoftware.com [Zenly]There will be a resubmit option in the dropdown to resubmit any MME Loan file that isn't an initial request."
+        },
+        {
+          question: "Q2. Can I review data before it is sent to lender?",
+          answer: "General loan data will be shown prior to you selecting submit or cancel."
+        },
+        {
+          question: "Q3. How do I know if submission was successful? There is no pop up on my end.",
+          answer: "Once a submission is successful, the file will be registered and a message will display showing submission complete."
+        },
+        {
+          question: "Q4. Will I get an email or notification of submission or loan number to reference by broker?",
+          answer: "When the loan is registered, a registration/loan number should be generated."
+        },
+        {
+          question: "Q5. How can I attach documents to submission?",
+          answer: "The documents in the loan are not sent to the lender. You should send the documents to the lender personally."
+        },
+        {
+          question: "Q6. How can I upload docs after submission?",
+          answer: "Please contact us; calyxinterfacesupport@calyxsoftware.com"
+        },
+        {
+          question: "Q7. How will conditions be imported back? Will I get notifications once its been conditioned.",
+          answer: "Please contact us; calyxinterfacesupport@calyxsoftware.com"
+        },
+        {
+          question: "Q8. Will my path loan number and lender loan number automatically link or be listed?",
+          answer: "Please contact us; calyxinterfacesupport@calyxsoftware.com"
+        },
+        {
+          question: "Q9. How is this different from exporting a 3.2/3.4 that I am used to? What is the benefit?",
+          answer: "A 3.2/3.4 will only contain some application data but no Closing Costs (Fees), HMDA, Documents, or Conditions. Submitting through MME will include a more complete file for the Lender to begin processing. This will increase efficiency for both the Broker and Lender."
+        },
+        {
+          question: 'Q10. What are my other options under "submission information" all that is displayed is "new request." Would there be other options?',
+          answer: "Please contact us; calyxinterfacesupport@calyxsoftware.com"
+        },
+        {
+          question: "Q11. What about my du/do report? Will this send over as well?",
+          answer: "Please contact us; calyxinterfacesupport@calyxsoftware.com"
+        },
+        {
+          question: "Q12. What if my lender is not listed?",
+          answer: "Go to the Request to Add a Lender section and submit the necessary information for the lender you would like to add to MME. A representative will reach out to you to discuss more."
+        },
+      ],
+
+      init() {
+        console.log('Initializing QA Manager...'); // 디버깅용
+        this.renderQAList();
+        this.bindQAEvents();
+        this.setupSearch();
+      },
+
+      renderQAList() {
+        console.log('Rendering QA List...');
+        const qaHTML = this.qaData.map(item => `
+          <div class="qa-item">
+            <dl>
+              <dt>
+                <i class="fa-regular fa-chevron-right"></i>
+                ${item.question}
+              </dt>
+              <dd style="display: none;">${item.answer}</dd>
+            </dl>
+          </div>
+        `).join('');
+
+        const $container = $('#helpListContainer');
+        if ($container.length) {
+          $container.html(qaHTML);
+          console.log('QA List rendered successfully');
+          this.bindQAEvents();
+        } else {
+          console.error('QA container not found!');
+        }
+      },
+
+      bindQAEvents() {
+        $(document).off('click', '.qa-item dt').on('click', '.qa-item dt', function() {
+          const $item = $(this).closest('.qa-item');
+          const $answer = $item.find('dd');
+          const $icon = $(this).find('i');
+
+          // 다른 열린 항목 닫기
+          $('.qa-item').not($item)
+            .removeClass('active')
+            .find('dd').slideUp(300);
+
+          // 현재 항목 토글
+          $item.toggleClass('active');
+          $answer.slideToggle(300);
+        });
+      },
+
+      setupSearch() {
+        const $searchInput = $('.qa-search input');
+        
+        // 이벤트 중복 방지
+        $searchInput.off('input').on('input', (e) => {
+          const searchTerm = e.target.value.toLowerCase();
+          
+          $('.qa-item').each(function() {
+            const $item = $(this);
+            const question = $item.find('dt').text().toLowerCase();
+            const answer = $item.find('dd').text().toLowerCase();
+            
+            if (question.includes(searchTerm) || answer.includes(searchTerm)) {
+              $item.show();
+            } else {
+              $item.hide();
+            }
+          });
+        });
+      },
+
+      resetAccordion() {
+        $('.qa-item')
+          .removeClass('active')
+          .find('dd').hide();
+        $('.qa-item dt i')
+          .removeClass('fa-chevron-down')
+          .addClass('fa-chevron-right');
+      }
+    },
+
+    // 초기화
+    init() {
+      this.menuManager.init();
+      this.videoPlayer.init();
+      this.qaManager.init();
+      this.bindCloseEvent();
+    },
+
+    // 초기 상태 설정 함수
+    setInitialState() {
+      // 모든 상태 초기화
+      $(".menu-list").removeClass("on");
+      $(".help-list").removeClass("show").hide();
+
+      // Q&A 초기화
+      if (this.qaManager) {
+        this.qaManager.resetAccordion();
+      }
+
+      // 검색창 초기화
+      $(".qa-search input").val("");
+      $(".qa-item").show();
+
+      // 첫 번째 메뉴와 컨텐츠 활성화
+      $(".menu-1").addClass("on");
+      $(".help-1").addClass("show").show();
+    },
+
+    // 닫기 버튼 이벤트 바인딩 수정
+    bindCloseEvent() {
+      $("#helpDialog .btn_close").on("click", () => {
+        $("#helpDialog").fadeOut(300);
+        $(".modal-overlay").fadeOut(300);
+
+        // 상태만 초기화하고 이벤트는 유지
+        $(".menu-list").removeClass("on");
+        $(".help-list").removeClass("show").hide();
+      });
+    },
+  };
+
+  // 문서 로드 시 초기화 확인
+  $(document).ready(() => {
+    console.log('Document ready, initializing MMEHelp...');
+    MMEHelp.init();
+  });
+</script>
