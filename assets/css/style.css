@@ -1760,7 +1760,7 @@ input:not([type="checkbox"]):-ms-input-placeholder {
 
   .content-help .help-1 img {
     width: 100%;
-    max-width: 350px;
+    max-width: 250px;
   }
   .content-help .help-1 .help-1-cont {
     width: 80%;
