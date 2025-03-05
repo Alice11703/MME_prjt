@@ -77,8 +77,8 @@
 
 /* Video Modal Specific Styles */
 .video-dialog {
-    width: 80vw;
-    max-width: 1200px;
+    width: 60vw;
+    max-width: 1000px;
     background: #000;
     padding: 0;
     border-radius: 12px;

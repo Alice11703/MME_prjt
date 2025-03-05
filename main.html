@@ -140,51 +140,63 @@
     
     <script type="text/javascript">
     $(document).ready(function() {
-        // Help 버튼 클릭 이벤트
-        $("#helpButton, .help i").click(async function() {
-            $(".modal-overlay").fadeIn(300);
-            try {
-                const response = await fetch('help.html', {
-                    cache: 'no-store',
-                    credentials: 'same-origin',
-                    headers: {
-                        'Cache-Control': 'no-cache',
-                        'Pragma': 'no-cache'
+        // Help 버튼 클릭 시 help.html 컨텐츠를 동적으로 로드
+        $("#helpButton, .help i").click(function() {
+            // help.html이 아직 로드되지 않았다면
+            if ($("#helpDialog").length === 0) {
+                $.ajax({
+                    url: '/help.html',
+                    method: 'GET',
+                    success: function(response) {
+                        // help.html 컨텐츠를 body에 추가
+                        $('body').append(response);
+                        showHelpModal();
+                        // 초기 이벤트 바인딩
+                        if (typeof MMEHelp !== 'undefined') {
+                            MMEHelp.init();
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        console.error('Help 모달 로드 실패:', error);
                     }
                 });
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
+            } else {
+                showHelpModal();
+                // 이벤트 재바인딩
+                if (typeof MMEHelp !== 'undefined') {
+                    MMEHelp.rebindEvents();  // 새로운 메서드 추가
                 }
-                const content = await response.text();
-                $(".dialog_cont").html(content);
-            } catch (error) {
-                console.error('Error loading help content:', error);
-                $(".dialog_cont").html(`
-                    <div class="error-message">
-                        <p>Sorry, help content could not be loaded.</p>
-                        <p>Please try again later.</p>
-                    </div>
-                `);
             }
-            $("#helpDialog").fadeIn(300);
         });
 
-        // // Dialog 닫기 버튼 이벤트
-        // $("#closeHelpModal").click(function() {
-        //     $(".modal-overlay").fadeOut(300);
-        //     $("#helpDialog").fadeOut(300);
+        // 모달 표시 함수
+        function showHelpModal() {
+            // UI 상태만 초기화
+            if (typeof MMEHelp !== 'undefined') {
+                MMEHelp.setInitialState();
+            }
             
-        //     // help 상태 초기화 추가
-        //     if (MMEHelp && typeof MMEHelp.setInitialState === 'function') {
-        //         MMEHelp.setInitialState();
-        //     }
-        // });
+            $(".modal-overlay").fadeIn(300);
+            $("#helpDialog").fadeIn(300);
+        }
 
-        // Dialog 외부 클릭시 닫기
-        $(document).on('click', '.modal-overlay', function() {
+        // Dialog 닫기 버튼 이벤트
+        $(document).on('click', "#helpDialog .btn_close, .modal-overlay", function() {
+            hideHelpModal();
+        });
+
+        // ESC 키 이벤트
+        $(document).on('keydown', function(e) {
+            if (e.key === 'Escape') {
+                hideHelpModal();
+            }
+        });
+
+        // 모달 숨김 함수
+        function hideHelpModal() {
             $(".modal-overlay").fadeOut(300);
             $("#helpDialog").fadeOut(300);
-        });
+        }
 
         // Video Modal 관련 JavaScript
         $("#btnPlayPoint").click(function() {
@@ -269,32 +281,6 @@
             });
             
             container.appendChild(fragment);
-        });
-
-        //popups
-        $(".btn_close").unbind("click").bind("click", function () {
-            $("#favoritesPopup").hide();
-        });
-        $("#btnOkay").unbind("click").bind("click", function () {
-            $("#favoritesPopup").hide();
-        });
-
-        //favorites
-        $(".fa-star").unbind("click").bind("click", function () {
-            $(this).toggleClass('fa-solid');
-        });
-        $("i.disabled").unbind("click").bind("click", function () {
-            $("#favoritesPopup").show();
-        });
-        $(".fa-solid.ico-fav__on").unbind("click").bind("click", function () {
-            $(this).toggleClass('ico-fav__on fa-solid');
-            //$(".ico-fav__off").toggleClass('disabled');
-
-            $(this).parent().parent().parent().hide();
-            $(".ico-fav__off").removeClass('disabled');
-        });
-        $(".ico-fav__off").unbind("click").bind("click", function () {
-            $(this).toggleClass('ico-fav__on fa-solid');
         });
 
         // 검색 기능 구현
@@ -422,7 +408,7 @@ const MMEMain = {
                     const doc = parser.parseFromString(htmlText, 'text/html');
                     
                     // help.html의 실제 컨텐츠 부분만 선택
-                    const helpContent = doc.querySelector('.content-help');
+                    const helpContent = doc.querySelector('.support-grid');
                     
                     if (helpContent) {
                         // 컨텐츠 삽입

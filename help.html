@@ -88,7 +88,8 @@
                     <dl>
                       <dt>
                         <span>For the Zenly Users</span>
-                        <!-- <span><i class="fa-solid fa-circle-play"></i> Play!</span> -->
+                        <span id="btnPlayZenly"
+                        ><i class="fa-solid fa-circle-play"></i> Play!</span>
                       </dt>
                       <dd>
                         1. A user will either create or upload their application
@@ -359,48 +360,70 @@
       init() {
         this.video = document.getElementById("MMEVideo");
         this.modal = document.querySelector("#popPlayer");
-        this.setupVideoSource();
+        this.modalTitle = document.querySelector("#popPlayer .dialog_title");
         this.bindVideoEvents();
-      },
-
-      setupVideoSource() {
-        const videoSource =
-          "https://calyxwmstorageqa.blob.core.windows.net/common/MME/Mortgage%20Market%20Exchange-Zenly.mp4";
-        $(this.video).find("source").attr("src", videoSource);
-        this.video.load();
       },
 
       bindVideoEvents() {
         // Point 비디오 재생 버튼 클릭 이벤트
         $("#btnPlayPoint").on("click", () => {
+          // Point 비디오 소스 설정
+          $(this.video).find("source").attr("src", "/assets/videos/MME-Point.mp4");
+          this.video.load();
+          
+          // 모달 타이틀 변경
+          $(this.modalTitle).text("MME Point Introduction Video");
+          
           // 모달 표시 설정
           $("#popPlayer")
             .css({
-              display: "block",
-              opacity: "1",
+              'display': 'block',
+              'opacity': '1'
             })
-            .addClass("show");
-
+            .addClass('show');
+          
           // 배경 오버레이 표시
-          $(".popup-bg").css("display", "block").fadeIn(300);
+          $(".popup-bg")
+            .css('display', 'block')
+            .fadeIn(300);
+        });
 
-          // 비디오 로드
-          if (this.video) {
-            this.video.load();
-          }
+        // Zenly 비디오 재생 버튼 클릭 이벤트
+        $("#btnPlayZenly").on("click", () => {
+          // Zenly 비디오 소스 설정
+          $(this.video).find("source").attr("src", "/assets/videos/MME-Zenly.mp4");
+          this.video.load();
+          
+          // 모달 타이틀 변경
+          $(this.modalTitle).text("MME Zenly Introduction Video");
+          
+          // 모달 표시 설정
+          $("#popPlayer")
+            .css({
+              'display': 'block',
+              'opacity': '1'
+            })
+            .addClass('show');
+          
+          // 배경 오버레이 표시
+          $(".popup-bg")
+            .css('display', 'block')
+            .fadeIn(300);
         });
 
         // 비디오 모달 닫기 버튼 이벤트
         $("#closeVideoModal").on("click", () => {
           // 모달 숨기기
-          $("#popPlayer").removeClass("show").css({
-            opacity: "0",
-            display: "none",
-          });
-
+          $("#popPlayer")
+            .removeClass('show')
+            .css({
+              'opacity': '0',
+              'display': 'none'
+            });
+          
           // 배경 오버레이 숨기기
           $(".popup-bg").fadeOut(300);
-
+          
           // 비디오 정지
           if (this.video) {
             this.video.pause();
@@ -578,27 +601,31 @@
       this.menuManager.init();
       this.videoPlayer.init();
       this.qaManager.init();
-      this.bindCloseEvent();
+      this.bindEvents();  // 기본 이벤트 바인딩
     },
 
-    // 초기 상태 설정 함수
-    setInitialState() {
-      // 모든 상태 초기화
-      $(".menu-list").removeClass("on");
-      $(".help-list").removeClass("show").hide();
+    // 이벤트 재바인딩을 위한 새로운 메서드
+    rebindEvents() {
+      // 메뉴 이벤트 재바인딩
+      this.menuManager.bindMenuEvents();
+      // 비디오 이벤트 재바인딩
+      this.videoPlayer.bindVideoEvents();
+      // Q&A 이벤트 재바인딩
+      this.qaManager.bindQAEvents();
+      this.qaManager.setupSearch();
+    },
 
-      // Q&A 초기화
+    // UI 상태만 초기화하는 메서드
+    setInitialState() {
+      $('.menu-list').removeClass('on');
+      $('.help-list').removeClass('show').hide();
+      $('.menu-1').addClass('on');
+      $('.help-1').addClass('show').show();
+      
+      // Q&A 상태 초기화
       if (this.qaManager) {
         this.qaManager.resetAccordion();
       }
-
-      // 검색창 초기화
-      $(".qa-search input").val("");
-      $(".qa-item").show();
-
-      // 첫 번째 메뉴와 컨텐츠 활성화
-      $(".menu-1").addClass("on");
-      $(".help-1").addClass("show").show();
     },
 
     // 닫기 버튼 이벤트 바인딩 수정
